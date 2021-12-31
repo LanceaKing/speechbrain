@@ -103,17 +103,6 @@ def prepare_cnceleb(
     save_csv_train = os.path.join(save_folder, TRAIN_CSV)
     save_csv_dev = os.path.join(save_folder, DEV_CSV)
 
-    # Create the data folder contains VoxCeleb1 test data from the source
-    if source is not None:
-        if not os.path.exists(os.path.join(data_folder, "wav", "id10270")):
-            logger.info(f"Extracting {source}/{TEST_WAV} to {data_folder}")
-            shutil.unpack_archive(os.path.join(source, TEST_WAV), data_folder)
-        if not os.path.exists(os.path.join(data_folder, "meta")):
-            logger.info(f"Copying {source}/meta to {data_folder}")
-            shutil.copytree(
-                os.path.join(source, "meta"), os.path.join(data_folder, "meta")
-            )
-
     # Check if this phase is already done (if so, skip it)
     if skip(splits, save_folder, conf):
         logger.info("Skipping preparation, completed in previous run.")
