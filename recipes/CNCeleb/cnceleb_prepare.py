@@ -290,10 +290,10 @@ def _get_chunks(seg_dur, audio_id, audio_duration):
     """
     Returns list of chunks
     """
-    num_chunks = int(audio_duration / seg_dur)  # all in milliseconds
+    num_chunks = int(np.ceil(audio_duration / seg_dur))  # all in milliseconds
 
     chunk_lst = [
-        audio_id + "_" + str(i * seg_dur) + "_" + str(i * seg_dur + seg_dur)
+        audio_id + "_" + str(i * seg_dur) + "_" + str(min(i * seg_dur + seg_dur, audio_duration))
         for i in range(num_chunks)
     ]
 
