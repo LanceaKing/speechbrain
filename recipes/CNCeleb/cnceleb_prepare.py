@@ -241,18 +241,17 @@ def _get_utt_split_lists(
     print("Getting file list...")
     for data_folder in data_folders:
 
-        test_spks = [
-            line.rstrip("\n").split("-")[0]
+        test_spks = set(
+            line[:line.index("-")].strip()
             for line in open(verification_pairs_file)
-        ]
-        test_spks = set(sorted(test_spks))
+        )
 
         path = os.path.join(data_folder, "data", "**", "*.flac")
         if split_speaker:
             # avoid test speakers for train and dev splits
             audio_files_dict = {}
             for f in glob.glob(path, recursive=True):
-                spk_id = f.split("/data/")[1].split("/")[0]
+                spk_id = f.split(os.path.sep)[-2]
                 if spk_id not in test_spks:
                     audio_files_dict.setdefault(spk_id, []).append(f)
 
@@ -269,7 +268,7 @@ def _get_utt_split_lists(
             audio_files_list = []
             for f in glob.glob(path, recursive=True):
                 try:
-                    spk_id = f.split("/data/")[1].split("/")[0]
+                    spk_id = f.split(os.path.sep)[-2]
                 except ValueError:
                     logger.info(f"Malformed path: {f}")
                     continue
@@ -328,17 +327,18 @@ def prepare_csv(seg_dur, wav_lst, csv_file, random_segment=False, amp_th=0):
     csv_output = [["ID", "duration", "wav", "start", "stop", "spk_id"]]
 
     # For assigning unique ID to each chunk
-    my_sep = "--"
+    my_sep = "-"
     entry = []
     # Processing all the wav files in the list
     for wav_file in tqdm(wav_lst, dynamic_ncols=True):
         # Getting sentence and speaker ids
         try:
-            [spk_id, sess_id, utt_id] = wav_file.split("/")[-3:]
+            [spk_id, fname] = wav_file.split(os.path.sep)[-2:]
+            stem, _ = os.path.splitext(fname)
         except ValueError:
             logger.info(f"Malformed path: {wav_file}")
             continue
-        audio_id = my_sep.join([spk_id, sess_id, utt_id.split(".")[0]])
+        audio_id = spk_id + my_sep + stem
 
         # Reading the signal (to retrieve duration in seconds)
         signal, fs = torchaudio.load(wav_file)
