@@ -223,11 +223,7 @@ if __name__ == "__main__":
     with open(params_file) as fin:
         params = load_hyperpyyaml(fin, overrides)
 
-    # Download verification list (to exlude verification sentences from train)
-    veri_file_path = os.path.join(
-        params["save_folder"], os.path.basename(params["verification_file"])
-    )
-    download_file(params["verification_file"], veri_file_path)
+    veri_file_path = params["verification_file"]
 
     from cnceleb_prepare import prepare_cnceleb  # noqa E402
 

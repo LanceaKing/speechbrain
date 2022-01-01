@@ -430,8 +430,8 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
 
         # Get unique ids (enrol and test utterances)
         for line in open(test_lst_file):
-            e_id = line.split(" ")[0].strip()
-            t_id = line.split(" ")[1].rstrip().split("/")[-1].split(".")[0].strip()
+            e_id, t_id = line.strip().split(" ")[:2]
+            t_id = os.path.splitext(os.path.basename(t_id))[0]
             enrol_ids.append(e_id)
             test_ids.append(t_id)
 
@@ -442,7 +442,12 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
         logger.info("preparing enrol csv")
         enrol_csv = []
         for id in enrol_ids:
-            wav = data_folder + "/eval/enroll/" + id + ".flac"
+            wav = os.path.join(
+                data_folder,
+                "eval",
+                "enroll",
+                id + ".flac"
+            )
 
             # Reading the signal (to retrieve duration in seconds)
             signal, fs = torchaudio.load(wav)
@@ -450,7 +455,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
             audio_duration = signal.shape[0] / SAMPLERATE
             start_sample = 0
             stop_sample = signal.shape[0]
-            spk_id = id.split("-")[0]
+            spk_id = id[:id.index("-")]
 
             csv_line = [
                 id,
@@ -478,7 +483,12 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
         logger.info("preparing test csv")
         test_csv = []
         for id in test_ids:
-            wav = data_folder + "/eval/test/" + id + ".flac"
+            wav = os.path.join(
+                data_folder,
+                "eval",
+                "test",
+                id + ".flac"
+            )
 
             # Reading the signal (to retrieve duration in seconds)
             signal, fs = torchaudio.load(wav)
@@ -486,7 +496,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
             audio_duration = signal.shape[0] / SAMPLERATE
             start_sample = 0
             stop_sample = signal.shape[0]
-            spk_id = id.split("-")[0]
+            spk_id = id[:id.index("-")]
 
             csv_line = [
                 id,
