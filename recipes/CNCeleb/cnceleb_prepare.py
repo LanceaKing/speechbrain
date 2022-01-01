@@ -242,7 +242,7 @@ def _get_utt_split_lists(
     for data_folder in data_folders:
 
         test_spks = set(
-            line[:line.index("-")].strip()
+            os.path.basename(line.strip().split(" ")[1]).split("-")[0]
             for line in open(verification_pairs_file)
         )
 
