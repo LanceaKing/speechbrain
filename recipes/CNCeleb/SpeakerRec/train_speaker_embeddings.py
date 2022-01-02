@@ -235,7 +235,7 @@ if __name__ == "__main__":
     )
 
     run_on_main(hparams["pretrainer"].collect_files)
-    hparams["pretrainer"].load_collected()
+    hparams["pretrainer"].load_collected(device=run_opts["device"])
 
     # Brain class initialization
     speaker_brain = SpeakerBrain(
