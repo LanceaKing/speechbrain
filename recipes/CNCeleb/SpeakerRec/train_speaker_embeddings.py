@@ -234,6 +234,9 @@ if __name__ == "__main__":
         overrides=overrides,
     )
 
+    run_on_main(hparams["pretrainer"].collect_files)
+    hparams["pretrainer"].load_collected()
+
     # Brain class initialization
     speaker_brain = SpeakerBrain(
         modules=hparams["modules"],

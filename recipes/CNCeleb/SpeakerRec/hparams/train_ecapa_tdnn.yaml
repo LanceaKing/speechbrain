@@ -175,3 +175,12 @@ checkpointer: !new:speechbrain.utils.checkpoints.Checkpointer
         classifier: !ref <classifier>
         normalizer: !ref <mean_var_norm>
         counter: !ref <epoch_counter>
+
+pretrain_path: speechbrain/spkrec-ecapa-voxceleb
+
+pretrainer: !new:speechbrain.utils.parameter_transfer.Pretrainer
+    collect_in: !ref <output_folder>
+    loadables:
+        embedding_model: !ref <embedding_model>
+    paths:
+        embedding_model: !ref speechbrain/spkrec-ecapa-voxceleb/embedding_model.ckpt
