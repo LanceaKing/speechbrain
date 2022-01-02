@@ -179,7 +179,7 @@ checkpointer: !new:speechbrain.utils.checkpoints.Checkpointer
 pretrain_path: speechbrain/spkrec-ecapa-voxceleb
 
 pretrainer: !new:speechbrain.utils.parameter_transfer.Pretrainer
-    collect_in: !ref <output_folder>
+    collect_in: !ref <save_folder>
     loadables:
         embedding_model: !ref <embedding_model>
     paths:
