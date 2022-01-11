@@ -25,7 +25,6 @@ from speechbrain.utils.metric_stats import EER, minDCF
 from speechbrain.processing.PLDA_LDA import StatObject_SB
 from speechbrain.processing.PLDA_LDA import Ndx
 from speechbrain.processing.PLDA_LDA import fast_PLDA_scoring
-from speechbrain.utils.data_utils import download_file
 from speechbrain.utils.distributed import run_on_main
 
 
