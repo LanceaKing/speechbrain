@@ -20,7 +20,6 @@ import random
 import torch
 import torchaudio
 import speechbrain as sb
-from speechbrain.utils.data_utils import download_file
 from hyperpyyaml import load_hyperpyyaml
 from speechbrain.utils.distributed import run_on_main
 
