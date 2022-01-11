@@ -9,7 +9,6 @@ import csv
 import logging
 import glob
 import random
-import shutil
 import sys  # noqa F401
 import numpy as np
 import torch
@@ -293,7 +292,11 @@ def _get_chunks(seg_dur, audio_id, audio_duration):
     num_chunks = int(np.ceil(audio_duration / seg_dur))  # all in milliseconds
 
     chunk_lst = [
-        audio_id + "_" + str(i * seg_dur) + "_" + str(min(i * seg_dur + seg_dur, audio_duration))
+        audio_id
+        + "_"
+        + str(i * seg_dur)
+        + "_"
+        + str(min(i * seg_dur + seg_dur, audio_duration))
         for i in range(num_chunks)
     ]
 
@@ -442,12 +445,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
         logger.info("preparing enrol csv")
         enrol_csv = []
         for id in enrol_ids:
-            wav = os.path.join(
-                data_folder,
-                "eval",
-                "enroll",
-                id + ".flac"
-            )
+            wav = os.path.join(data_folder, "eval", "enroll", id + ".flac")
 
             # Reading the signal (to retrieve duration in seconds)
             signal, fs = torchaudio.load(wav)
@@ -455,7 +453,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
             audio_duration = signal.shape[0] / SAMPLERATE
             start_sample = 0
             stop_sample = signal.shape[0]
-            spk_id = id[:id.index("-")]
+            spk_id = id[: id.index("-")]
 
             csv_line = [
                 id,
@@ -483,12 +481,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
         logger.info("preparing test csv")
         test_csv = []
         for id in test_ids:
-            wav = os.path.join(
-                data_folder,
-                "eval",
-                "test",
-                id + ".flac"
-            )
+            wav = os.path.join(data_folder, "eval", "test", id + ".flac")
 
             # Reading the signal (to retrieve duration in seconds)
             signal, fs = torchaudio.load(wav)
@@ -496,7 +489,7 @@ def prepare_csv_enrol_test(data_folders, save_folder, verification_pairs_file):
             audio_duration = signal.shape[0] / SAMPLERATE
             start_sample = 0
             stop_sample = signal.shape[0]
-            spk_id = id[:id.index("-")]
+            spk_id = id[: id.index("-")]
 
             csv_line = [
                 id,
